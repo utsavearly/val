@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Be My Valentine </title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #ffd6e8, #ffeef6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            background: #fff0f6;
+            padding: 40px 60px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #d63384;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+
+        #yes, #no {
+            position: fixed;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        #yes {
+            background: #ff4d88;
+            color: white;
+            font-size: 1.6rem;
+            padding: 22px 45px;
+            left: 50%;
+            top: 55%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        #no {
+            background: #ffc2d9;
+            color: #8c1d40;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            left: 50%;
+            top: 65%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            position: relative;
+            animation: pop 0.4s ease;
+        }
+
+        .popup-content img {
+            width: 300px;
+            border-radius: 20px;
+            margin-top: 15px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 22px;
+            cursor: pointer;
+            color: #d63384;
+        }
+
+        @keyframes pop {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Will you be my Valentine? </h1>
+</div>
+
+<button id="yes">YES </button>
+<button id="no">No </button>
+
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <span class="close-btn" id="closePopup">✖</span>
+        <h2>YAYYYYY </h2>
+        <p>I knew you’d say yes that's why no button is not working you can try again</p>
+        <img src="minion.png" alt="Happy minion">
+    </div>
+</div>
+
+<script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const popup = document.getElementById("popup");
+    const closePopup = document.getElementById("closePopup");
+
+    const STEP = 30;
+    const SAFE_MARGIN = 10;
+
+    document.addEventListener("mousemove", (e) => {
+        const rect = noBtn.getBoundingClientRect();
+
+        const dx = e.clientX - (rect.left + rect.width / 2);
+        const dy = e.clientY - (rect.top + rect.height / 2);
+
+        if (Math.abs(dx) < 100 && Math.abs(dy) < 80) {
+            let newLeft = rect.left - Math.sign(dx) * STEP;
+            let newTop = rect.top - Math.sign(dy) * STEP;
+
+            newLeft = Math.max(
+                SAFE_MARGIN,
+                Math.min(window.innerWidth - rect.width - SAFE_MARGIN, newLeft)
+            );
+
+            newTop = Math.max(
+                SAFE_MARGIN,
+                Math.min(window.innerHeight - rect.height - SAFE_MARGIN, newTop)
+            );
+
+            noBtn.style.left = `${newLeft}px`;
+            noBtn.style.top = `${newTop}px`;
+        }
+    });
+
+    yesBtn.addEventListener("click", () => {
+        popup.style.display = "flex";
+    });
+
+    closePopup.addEventListener("click", () => {
+        popup.style.display = "none";
+    });
+</script>
+
+</body>
+</html>
